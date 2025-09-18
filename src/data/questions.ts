@@ -3,6 +3,8 @@ export interface Question {
   question: string;
   options: string[];
   correctAnswer: number;
+  code: string; // e.g., q001
+  location: string; // placeholder to be updated later
 }
 
 export const questions: Question[] = [
@@ -15,7 +17,9 @@ export const questions: Question[] = [
       "Ayurvedic Cooking",
       "Sanskrit Literature"
     ],
-    correctAnswer: 1
+    correctAnswer: 1,
+    code: "q001",
+    location: "Location 1"
   },
   {
     id: 2,
@@ -26,7 +30,9 @@ export const questions: Question[] = [
       "$15-16 billion",
       "$25-30 billion"
     ],
-    correctAnswer: 1
+    correctAnswer: 1,
+    code: "q002",
+    location: "Location 2"
   },
   {
     id: 3,
@@ -37,7 +43,9 @@ export const questions: Question[] = [
       "Mysore Silk",
       "All of the above"
     ],
-    correctAnswer: 3
+    correctAnswer: 3,
+    code: "q003",
+    location: "Location 3"
   },
   {
     id: 4,
@@ -48,7 +56,9 @@ export const questions: Question[] = [
       "6-7%", 
       "10-12%"
     ],
-    correctAnswer: 1
+    correctAnswer: 1,
+    code: "q004",
+    location: "Location 4"
   },
   {
     id: 5,
@@ -59,6 +69,73 @@ export const questions: Question[] = [
       "40-50%",
       "60-70%"
     ],
-    correctAnswer: 2
+    correctAnswer: 2,
+    code: "q005",
+    location: "Location 5"
+  },
+  {
+    id: 6,
+    question: "Which Indian textile, known for its intricate weaving, supports local economies and global fashion?",
+    options: [
+      "Banarasi Silk",
+      "Khadi Cotton",
+      "Pashmina Wool",
+      "Chanderi Fabric"
+    ],
+    correctAnswer: 0,
+    code: "q006",
+    location: "Location 6"
+  },
+  {
+    id: 7,
+    question: "Which traditional Indian beverage has seen a global wellness trend for its anti-inflammatory properties?",
+    options: [
+      "Masala Chai",
+      "Turmeric Latte (Haldi Doodh)",
+      "Lassi",
+      "Nimbu Pani"
+    ],
+    correctAnswer: 1,
+    code: "q007",
+    location: "Location 7"
+  },
+  {
+    id: 8,
+    question: "What traditional Indian system contributes to sustainable agriculture and biodiversity conservation?",
+    options: [
+      "Slash and Burn",
+      "Hydroponics",
+      "Vedic Farming",
+      "Monoculture"
+    ],
+    correctAnswer: 2,
+    code: "q008",
+    location: "Location 8"
+  },
+  {
+    id: 9,
+    question: "Which Indian city is globally recognized for its handwoven carpets that drive exports?",
+    options: [
+      "Agra",
+      "Bhadohi",
+      "Surat",
+      "Jodhpur"
+    ],
+    correctAnswer: 1,
+    code: "q009",
+    location: "Location 9"
+  },
+  {
+    id: 10,
+    question: "Which Indian classical medical text forms the foundation of Ayurveda?",
+    options: [
+      "Charaka Samhita",
+      "Arthashastra",
+      "Rigveda",
+      "Sushruta Samhita"
+    ],
+    correctAnswer: 0,
+    code: "q010",
+    location: "Location 10"
   }
 ];

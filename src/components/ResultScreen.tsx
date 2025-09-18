@@ -2,13 +2,21 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Trophy, RotateCcw, Sparkles } from "lucide-react";
 
+interface UnlockedReward {
+  questionId: number;
+  question: string;
+  code: string;
+  location: string;
+}
+
 interface ResultScreenProps {
   score: number;
   totalQuestions: number;
+  unlockedRewards?: UnlockedReward[];
   onRestart: () => void;
 }
 
-export default function ResultScreen({ score, totalQuestions, onRestart }: ResultScreenProps) {
+export default function ResultScreen({ score, totalQuestions, unlockedRewards = [], onRestart }: ResultScreenProps) {
   const isAllCorrect = score === totalQuestions;
   const percentage = Math.round((score / totalQuestions) * 100);
 
@@ -90,6 +98,33 @@ export default function ResultScreen({ score, totalQuestions, onRestart }: Resul
           continues to create sustainable value in modern markets worldwide.
         </p>
       </div>
+
+      {/* Unlocked Codes */}
+      <Card className="bg-gradient-parchment border-2 border-secondary/30">
+        <CardContent className="p-6 text-left">
+          <h3 className="font-semibold text-foreground mb-3">Unlocked Codes</h3>
+          {unlockedRewards.length === 0 ? (
+            <p className="text-sm text-muted-foreground">No codes unlocked yet. Be among the top 3 correct answers to claim codes.</p>
+          ) : (
+            <ul className="space-y-2">
+              {unlockedRewards
+                .sort((a, b) => a.questionId - b.questionId)
+                .map(reward => (
+                  <li key={reward.questionId} className="flex items-start gap-3">
+                    <span className="inline-flex items-center rounded-md bg-primary/10 text-primary px-2 py-1 text-xs font-medium">
+                      {reward.code.toUpperCase()}
+                    </span>
+                    <div className="flex-1">
+                      <div className="text-sm text-foreground font-medium">Question {reward.questionId}</div>
+                      <div className="text-xs text-muted-foreground line-clamp-2">{reward.question}</div>
+                      <div className="text-xs text-secondary mt-1">Location: {reward.location}</div>
+                    </div>
+                  </li>
+                ))}
+            </ul>
+          )}
+        </CardContent>
+      </Card>
 
       {/* Restart Button */}
       <Button

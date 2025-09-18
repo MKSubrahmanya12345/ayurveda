@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: tradewisdom-claims-api
+    env: node
+    rootDir: tradewisdom-hunt/claims-api
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: REDIS_URL
+        sync: false
+

@@ -8,11 +8,16 @@ interface TreasureMapProps {
 export default function TreasureMap({ revealedMarkers }: TreasureMapProps) {
   // Positions for the X markers on the map (percentage-based for responsiveness)
   const markerPositions = [
-    { top: "25%", left: "20%" }, // Mountain region
-    { top: "35%", left: "60%" }, // Forest area
-    { top: "60%", left: "35%" }, // River crossing
-    { top: "45%", left: "75%" }, // Temple ruins
-    { top: "80%", left: "50%" }, // Coastal area
+    { top: "18%", left: "15%" },
+    { top: "28%", left: "40%" },
+    { top: "22%", left: "70%" },
+    { top: "40%", left: "20%" },
+    { top: "48%", left: "55%" },
+    { top: "42%", left: "80%" },
+    { top: "65%", left: "30%" },
+    { top: "70%", left: "65%" },
+    { top: "82%", left: "45%" },
+    { top: "88%", left: "75%" },
   ];
 
   return (

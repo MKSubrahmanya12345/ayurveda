@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { Compass, Sparkles, Play } from "lucide-react";
 import QuestionCard from "@/components/QuestionCard";
 import TreasureMap from "@/components/TreasureMap";
 import ResultScreen from "@/components/ResultScreen";
 import { questions } from "@/data/questions";
 import { useToast } from "@/hooks/use-toast";
+import { claimsService } from "@/lib/claimsService";
 
 type GameState = 'landing' | 'quiz' | 'result';
 
@@ -21,6 +23,11 @@ const Index = () => {
   );
   const [showAnswer, setShowAnswer] = useState(false);
   const { toast } = useToast();
+  const [teamName, setTeamName] = useState<string>(() => {
+    const key = "tw_team_name";
+    const existing = localStorage.getItem(key);
+    return existing ?? "";
+  });
 
   const currentQuestion = questions[currentQuestionIndex];
   const score = selectedAnswers.filter(
@@ -28,6 +35,11 @@ const Index = () => {
   ).length;
 
   const startQuiz = () => {
+    if (!teamName.trim()) {
+      toast({ title: "Enter team name", description: "Please enter your team name to start." });
+      return;
+    }
+    try { localStorage.setItem("tw_team_name", teamName.trim()); } catch {}
     setGameState('quiz');
     setCurrentQuestionIndex(0);
     setSelectedAnswers(new Array(questions.length).fill(null));
@@ -46,11 +58,30 @@ const Index = () => {
       const newMarkers = [...revealedMarkers];
       newMarkers[currentQuestionIndex] = true;
       setRevealedMarkers(newMarkers);
-      
-      toast({
-        title: "Correct! 🎉",
-        description: "You've revealed a treasure location!",
-      });
+
+      // Try to claim via service (API if configured, else local)
+      claimsService
+        .claim(currentQuestion.id, teamName)
+        .then((res) => {
+          if (res.awarded) {
+            toast({
+              title: `Correct! Code: ${(res.code ?? currentQuestion.code).toUpperCase()}`,
+              description: `You're in the top 3 for this question. Location: ${res.location ?? currentQuestion.location}`,
+            });
+          } else {
+            toast({
+              title: "Correct!",
+              description: "Good job! You answered correctly. (Top 3 already claimed)",
+            });
+          }
+        })
+        .catch(() => {
+          // On unexpected error, still show generic success
+          toast({
+            title: "Correct!",
+            description: "Good job!",
+          });
+        });
     } else {
       toast({
         title: "Not quite right",
@@ -139,18 +170,24 @@ const Index = () => {
           </div>
 
           {/* Start Button */}
-          <Button
-            onClick={startQuiz}
-            className="bg-gradient-hero text-primary-foreground hover:opacity-90 transition-opacity px-8 py-4 text-xl font-semibold animate-bounce-in"
-            size="lg"
-          >
-            <Play className="w-6 h-6 mr-2" />
-            Start Your Treasure Hunt
-          </Button>
+          <div className="mx-auto max-w-md space-y-3 animate-fade-slide-up">
+            <Input
+              value={teamName}
+              onChange={(e) => setTeamName(e.target.value)}
+              placeholder="Enter your team name"
+            />
+            <Button
+              onClick={startQuiz}
+              className="bg-gradient-hero text-primary-foreground hover:opacity-90 transition-opacity px-8 py-4 text-xl font-semibold w-full"
+              size="lg"
+              disabled={!teamName.trim()}
+            >
+              <Play className="w-6 h-6 mr-2" />
+              Start Your Treasure Hunt
+            </Button>
+          </div>
 
-          <p className="text-sm text-muted-foreground">
-            5 questions • Interactive map • Educational journey
-          </p>
+          <p className="text-sm text-muted-foreground">10 questions • Interactive map • Educational journey</p>
         </div>
       </div>
     );
@@ -195,11 +232,30 @@ const Index = () => {
   }
 
   if (gameState === 'result') {
+    // Pull from service to reflect authoritative claims
+    // Note: this is a render path; for simplicity in this SPA, we compute synchronously from local fallback as a baseline.
+    // The ResultScreen doesn't need live fetch since this is end-of-quiz, but we can precompute from local or rely on API in future enhancement.
+    const unlockedRewards = questions
+      .filter(q => {
+        // local check remains for immediate feedback; service is used at claim time
+        try {
+          const raw = localStorage.getItem("tw_top3_claims");
+          const map = raw ? JSON.parse(raw) as Record<number, string[]> : {};
+          return (map[q.id] ?? []).includes(teamName);
+        } catch { return false; }
+      })
+      .map(q => ({
+        questionId: q.id,
+        question: q.question,
+        code: q.code,
+        location: q.location,
+      }));
     return (
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <ResultScreen
           score={score}
           totalQuestions={questions.length}
+          unlockedRewards={unlockedRewards}
           onRestart={restartQuiz}
         />
       </div>
