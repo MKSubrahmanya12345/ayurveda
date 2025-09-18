@@ -18,7 +18,7 @@ export const questions: Question[] = [
       "Sanskrit Literature"
     ],
     correctAnswer: 1,
-    code: "q001",
+    code: "q003",
     location: "Location 1"
   },
   {
@@ -44,7 +44,7 @@ export const questions: Question[] = [
       "All of the above"
     ],
     correctAnswer: 3,
-    code: "q003",
+    code: "q008",
     location: "Location 3"
   },
   {
@@ -70,7 +70,7 @@ export const questions: Question[] = [
       "60-70%"
     ],
     correctAnswer: 2,
-    code: "q005",
+    code: "q006",
     location: "Location 5"
   },
   {
@@ -83,7 +83,7 @@ export const questions: Question[] = [
       "Chanderi Fabric"
     ],
     correctAnswer: 0,
-    code: "q006",
+    code: "q001",
     location: "Location 6"
   },
   {
@@ -109,7 +109,7 @@ export const questions: Question[] = [
       "Monoculture"
     ],
     correctAnswer: 2,
-    code: "q008",
+    code: "q005",
     location: "Location 8"
   },
   {
@@ -122,7 +122,7 @@ export const questions: Question[] = [
       "Jodhpur"
     ],
     correctAnswer: 1,
-    code: "q009",
+    code: "q010",
     location: "Location 9"
   },
   {
@@ -135,7 +135,7 @@ export const questions: Question[] = [
       "Sushruta Samhita"
     ],
     correctAnswer: 0,
-    code: "q010",
+    code: "q009",
     location: "Location 10"
   }
 ];
