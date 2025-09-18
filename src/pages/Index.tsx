@@ -1,14 +1,212 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Compass, Sparkles, Play } from "lucide-react";
+import QuestionCard from "@/components/QuestionCard";
+import TreasureMap from "@/components/TreasureMap";
+import ResultScreen from "@/components/ResultScreen";
+import { questions } from "@/data/questions";
+import { useToast } from "@/hooks/use-toast";
+
+type GameState = 'landing' | 'quiz' | 'result';
 
 const Index = () => {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
-    </div>
+  const [gameState, setGameState] = useState<GameState>('landing');
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [selectedAnswers, setSelectedAnswers] = useState<(number | null)[]>(
+    new Array(questions.length).fill(null)
   );
+  const [revealedMarkers, setRevealedMarkers] = useState<boolean[]>(
+    new Array(questions.length).fill(false)
+  );
+  const [showAnswer, setShowAnswer] = useState(false);
+  const { toast } = useToast();
+
+  const currentQuestion = questions[currentQuestionIndex];
+  const score = selectedAnswers.filter(
+    (answer, index) => answer === questions[index].correctAnswer
+  ).length;
+
+  const startQuiz = () => {
+    setGameState('quiz');
+    setCurrentQuestionIndex(0);
+    setSelectedAnswers(new Array(questions.length).fill(null));
+    setRevealedMarkers(new Array(questions.length).fill(false));
+    setShowAnswer(false);
+  };
+
+  const handleAnswerSelect = (answerIndex: number) => {
+    const newAnswers = [...selectedAnswers];
+    newAnswers[currentQuestionIndex] = answerIndex;
+    setSelectedAnswers(newAnswers);
+    setShowAnswer(true);
+
+    // Check if answer is correct and reveal marker
+    if (answerIndex === currentQuestion.correctAnswer) {
+      const newMarkers = [...revealedMarkers];
+      newMarkers[currentQuestionIndex] = true;
+      setRevealedMarkers(newMarkers);
+      
+      toast({
+        title: "Correct! 🎉",
+        description: "You've revealed a treasure location!",
+      });
+    } else {
+      toast({
+        title: "Not quite right",
+        description: "But you're learning valuable knowledge!",
+        variant: "destructive",
+      });
+    }
+
+    // Auto advance to next question or results
+    setTimeout(() => {
+      if (currentQuestionIndex < questions.length - 1) {
+        setCurrentQuestionIndex(currentQuestionIndex + 1);
+        setShowAnswer(false);
+      } else {
+        setGameState('result');
+      }
+    }, 2000);
+  };
+
+  const restartQuiz = () => {
+    startQuiz();
+  };
+
+  if (gameState === 'landing') {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <div className="text-center space-y-8 max-w-4xl mx-auto">
+          {/* Header */}
+          <div className="space-y-4 animate-fade-slide-up">
+            <div className="flex items-center justify-center gap-3 mb-6">
+              <Compass className="w-12 h-12 text-treasure-gold" />
+              <Sparkles className="w-8 h-8 text-secondary animate-pulse" />
+            </div>
+            
+            <h1 className="text-4xl md:text-6xl font-bold text-foreground leading-tight">
+              Mystery Treasure Hunt:
+            </h1>
+            <h2 className="text-2xl md:text-3xl font-semibold bg-gradient-hero bg-clip-text text-transparent">
+              The Wealth of Traditional Knowledge
+            </h2>
+            
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              Embark on an educational adventure to discover how India's ancient wisdom 
+              creates immense value in today's global economy. Each correct answer reveals 
+              a treasure location on your map!
+            </p>
+          </div>
+
+          {/* Feature Cards */}
+          <div className="grid md:grid-cols-3 gap-6 my-12">
+            <Card className="bg-gradient-parchment border-secondary/30">
+              <CardContent className="p-6 text-center">
+                <div className="w-12 h-12 bg-success/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl">🧘</span>
+                </div>
+                <h3 className="font-semibold text-foreground mb-2">Ancient Wisdom</h3>
+                <p className="text-sm text-muted-foreground">
+                  Explore Ayurveda, Yoga, and traditional practices
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-gradient-parchment border-secondary/30">
+              <CardContent className="p-6 text-center">
+                <div className="w-12 h-12 bg-warning/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl">🏺</span>
+                </div>
+                <h3 className="font-semibold text-foreground mb-2">Cultural Heritage</h3>
+                <p className="text-sm text-muted-foreground">
+                  Discover handicrafts and traditional arts
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-gradient-parchment border-secondary/30">
+              <CardContent className="p-6 text-center">
+                <div className="w-12 h-12 bg-treasure-gold/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl">💰</span>
+                </div>
+                <h3 className="font-semibold text-foreground mb-2">Global Economy</h3>
+                <p className="text-sm text-muted-foreground">
+                  Learn about economic impact and value creation
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Start Button */}
+          <Button
+            onClick={startQuiz}
+            className="bg-gradient-hero text-primary-foreground hover:opacity-90 transition-opacity px-8 py-4 text-xl font-semibold animate-bounce-in"
+            size="lg"
+          >
+            <Play className="w-6 h-6 mr-2" />
+            Start Your Treasure Hunt
+          </Button>
+
+          <p className="text-sm text-muted-foreground">
+            5 questions • Interactive map • Educational journey
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (gameState === 'quiz') {
+    return (
+      <div className="min-h-screen bg-background p-4">
+        <div className="max-w-6xl mx-auto space-y-8 pt-8">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
+              Traditional Knowledge Treasure Hunt
+            </h1>
+            <p className="text-muted-foreground">
+              Answer correctly to reveal treasure locations on the map!
+            </p>
+          </div>
+
+          {/* Quiz Layout */}
+          <div className="grid lg:grid-cols-2 gap-8 items-start">
+            {/* Question Card */}
+            <div className="order-2 lg:order-1">
+              <QuestionCard
+                question={currentQuestion}
+                selectedAnswer={selectedAnswers[currentQuestionIndex]}
+                isAnswered={showAnswer}
+                onAnswerSelect={handleAnswerSelect}
+                currentQuestion={currentQuestionIndex}
+                totalQuestions={questions.length}
+              />
+            </div>
+
+            {/* Treasure Map */}
+            <div className="order-1 lg:order-2 lg:sticky lg:top-8">
+              <TreasureMap revealedMarkers={revealedMarkers} />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (gameState === 'result') {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <ResultScreen
+          score={score}
+          totalQuestions={questions.length}
+          onRestart={restartQuiz}
+        />
+      </div>
+    );
+  }
+
+  return null;
 };
 
 export default Index;

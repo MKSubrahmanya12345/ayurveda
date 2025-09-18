@@ -47,6 +47,23 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        // Custom treasure hunt colors
+        success: {
+          DEFAULT: "hsl(var(--success))",
+          foreground: "hsl(var(--success-foreground))",
+        },
+        warning: {
+          DEFAULT: "hsl(var(--warning))",
+          foreground: "hsl(var(--warning-foreground))",
+        },
+        treasure: {
+          gold: "hsl(var(--treasure-gold))",
+          glow: "hsl(var(--treasure-glow))",
+        },
+        map: {
+          brown: "hsl(var(--map-brown))",
+        },
+        parchment: "hsl(var(--parchment))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -65,25 +82,78 @@ export default {
       },
       keyframes: {
         "accordion-down": {
-          from: {
-            height: "0",
-          },
-          to: {
-            height: "var(--radix-accordion-content-height)",
-          },
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
         },
         "accordion-up": {
-          from: {
-            height: "var(--radix-accordion-content-height)",
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+        "treasure-glow": {
+          "0%, 100%": { 
+            boxShadow: "0 0 20px hsl(var(--treasure-gold)), 0 0 40px hsl(var(--treasure-glow))",
+            transform: "scale(1)"
           },
-          to: {
-            height: "0",
+          "50%": { 
+            boxShadow: "0 0 30px hsl(var(--treasure-gold)), 0 0 60px hsl(var(--treasure-glow))",
+            transform: "scale(1.05)"
+          },
+        },
+        "x-marker-reveal": {
+          "0%": { 
+            opacity: "0", 
+            transform: "scale(0) rotate(0deg)",
+          },
+          "50%": {
+            opacity: "1",
+            transform: "scale(1.2) rotate(180deg)",
+          },
+          "100%": { 
+            opacity: "1", 
+            transform: "scale(1) rotate(360deg)",
+          },
+        },
+        "bounce-in": {
+          "0%": {
+            transform: "scale(0.3)",
+            opacity: "0",
+          },
+          "50%": {
+            transform: "scale(1.05)",
+            opacity: "0.8",
+          },
+          "70%": {
+            transform: "scale(0.9)",
+            opacity: "1",
+          },
+          "100%": {
+            transform: "scale(1)",
+            opacity: "1",
+          },
+        },
+        "fade-slide-up": {
+          "0%": {
+            opacity: "0",
+            transform: "translateY(20px)",
+          },
+          "100%": {
+            opacity: "1",
+            transform: "translateY(0)",
           },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "treasure-glow": "treasure-glow 3s ease-in-out infinite",
+        "x-marker-reveal": "x-marker-reveal 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55)",
+        "bounce-in": "bounce-in 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55)",
+        "fade-slide-up": "fade-slide-up 0.5s ease-out",
+      },
+      backgroundImage: {
+        "gradient-treasure": "var(--gradient-treasure)",
+        "gradient-hero": "var(--gradient-hero)",
+        "gradient-parchment": "var(--gradient-parchment)",
       },
     },
   },

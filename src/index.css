@@ -2,39 +2,62 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Traditional Knowledge Treasure Hunt Design System */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Base colors inspired by ancient manuscripts and traditional Indian art */
+    --background: 45 30% 96%;
+    --foreground: 25 20% 15%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    /* Card styling with parchment feel */
+    --card: 45 40% 98%;
+    --card-foreground: 25 20% 15%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 45 40% 98%;
+    --popover-foreground: 25 20% 15%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Primary: Deep traditional red/maroon */
+    --primary: 15 70% 35%;
+    --primary-foreground: 45 30% 96%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Secondary: Warm gold */
+    --secondary: 45 80% 70%;
+    --secondary-foreground: 25 20% 15%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Muted: Soft beige */
+    --muted: 45 20% 88%;
+    --muted-foreground: 25 15% 45%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Accent: Rich gold for treasure elements */
+    --accent: 45 90% 60%;
+    --accent-foreground: 25 20% 15%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    /* Success: Forest green for correct answers */
+    --success: 120 40% 35%;
+    --success-foreground: 45 30% 96%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    /* Warning: Saffron orange */
+    --warning: 35 85% 55%;
+    --warning-foreground: 25 20% 15%;
+
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 45 30% 96%;
+
+    --border: 45 20% 85%;
+    --input: 45 20% 90%;
+    --ring: 45 90% 60%;
+
+    /* Custom treasure hunt colors */
+    --treasure-gold: 45 100% 50%;
+    --treasure-glow: 45 100% 70%;
+    --map-brown: 25 35% 25%;
+    --parchment: 45 35% 92%;
+    
+    /* Gradients */
+    --gradient-treasure: linear-gradient(135deg, hsl(45 100% 50%), hsl(45 90% 60%));
+    --gradient-hero: linear-gradient(135deg, hsl(15 70% 35%), hsl(25 60% 40%));
+    --gradient-parchment: linear-gradient(145deg, hsl(45 35% 92%), hsl(45 25% 88%));
 
     --radius: 0.5rem;
 
